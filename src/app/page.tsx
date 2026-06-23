@@ -1,65 +1,75 @@
-import Image from "next/image";
-
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="min-h-screen bg-white">
+
+      {/* NAV */}
+      <nav className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+        <div className="flex items-center gap-2">
+          <div className="w-7 h-7 bg-green-800 rounded-lg flex items-center justify-center">
+            <span className="text-green-200 text-xs">↗</span>
+          </div>
+          <span className="font-medium text-lg">Desfinz</span>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
+        <div className="flex items-center gap-4">
+          <a href="#" className="text-sm text-gray-500">Cómo funciona</a>
+          <a href="#" className="text-sm text-gray-500">Precios</a>
+          <a href="/registro" className="bg-green-800 text-green-100 text-sm font-medium px-4 py-2 rounded-lg">
+            Empezar gratis
           </a>
         </div>
-      </main>
-    </div>
-  );
+      </nav>
+
+      {/* HERO */}
+      <section className="text-center px-6 py-16">
+        <div className="inline-flex items-center gap-2 bg-green-50 text-green-900 text-xs font-medium px-3 py-1 rounded-full mb-6">
+          ✓ Para argentinos que quieren llegar a fin de mes y más allá
+        </div>
+        <h1 className="text-4xl font-medium text-gray-900 leading-tight max-w-lg mx-auto mb-4">
+          Tu plata, <span className="text-green-700">bajo control</span> por primera vez
+        </h1>
+        <p className="text-gray-500 max-w-md mx-auto mb-8 leading-relaxed">
+          Calculá cuánto ahorrar para lo que querés, qué hacer con tu sueldo y cómo llegar a tus metas reales — sin jerga financiera.
+        </p>
+        <div className="flex items-center justify-center gap-3">
+          <a href="/registro" className="bg-green-800 text-green-100 font-medium px-6 py-3 rounded-lg">
+            Calculá tu objetivo gratis
+          </a>
+          <a href="#como-funciona" className="text-gray-500 border border-gray-200 px-6 py-3 rounded-lg">
+            Ver cómo funciona
+          </a>
+        </div>
+        <div className="flex items-center justify-center gap-6 mt-6 text-xs text-gray-400">
+          <span>✓ Sin tarjeta de crédito</span>
+          <span>✓ Gratis para empezar</span>
+          <span>✓ Contexto argentino real</span>
+        </div>
+      </section>
+
+      {/* FEATURES */}
+      <section className="px-6 pb-16 grid grid-cols-3 gap-4 max-w-3xl mx-auto">
+        <div className="border border-gray-100 rounded-xl p-5">
+          <div className="w-9 h-9 bg-green-50 rounded-lg flex items-center justify-center mb-3">
+            <span className="text-green-700 text-lg">🎯</span>
+          </div>
+          <p className="font-medium text-sm mb-1">Metas reales</p>
+          <p className="text-xs text-gray-500 leading-relaxed">De un sueldo normal a una moto, un auto o un viaje. Con números reales.</p>
+        </div>
+        <div className="border border-gray-100 rounded-xl p-5">
+          <div className="w-9 h-9 bg-green-50 rounded-lg flex items-center justify-center mb-3">
+            <span className="text-green-700 text-lg">📈</span>
+          </div>
+          <p className="font-medium text-sm mb-1">Inflación incluida</p>
+          <p className="text-xs text-gray-500 leading-relaxed">Calculamos con la realidad argentina: FCI, CEDEAR y plazo fijo.</p>
+        </div>
+        <div className="border border-gray-100 rounded-xl p-5">
+          <div className="w-9 h-9 bg-green-50 rounded-lg flex items-center justify-center mb-3">
+            <span className="text-green-700 text-lg">🤝</span>
+          </div>
+          <p className="font-medium text-sm mb-1">Asesores reales</p>
+          <p className="text-xs text-gray-500 leading-relaxed">Cuando lo necesitás, hablás con una persona. No con un bot.</p>
+        </div>
+      </section>
+
+    </main>
+  )
 }
