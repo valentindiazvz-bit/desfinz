@@ -8,6 +8,7 @@ import Link from 'next/link'
 export default function Registro() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [nombre, setNombre] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -18,12 +19,28 @@ export default function Registro() {
     setLoading(true)
     setError('')
 
+    if (!nombre || !email || !password || !confirmPassword) {
+      setError('Completá todos los campos')
+      setLoading(false)
+      return
+    }
+
+    if (password.length < 6) {
+      setError('La contraseña debe tener al menos 6 caracteres')
+      setLoading(false)
+      return
+    }
+
+    if (password !== confirmPassword) {
+      setError('Las contraseñas no coinciden')
+      setLoading(false)
+      return
+    }
+
     const { error } = await supabase.auth.signUp({
       email,
       password,
-      options: {
-        data: { nombre }
-      }
+      options: { data: { nombre } }
     })
 
     if (error) {
@@ -66,6 +83,7 @@ export default function Registro() {
               className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-green-600"
             />
           </div>
+
           <div>
             <label className="text-sm text-gray-600 mb-1 block">Email</label>
             <input
@@ -76,6 +94,7 @@ export default function Registro() {
               className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-green-600"
             />
           </div>
+
           <div>
             <label className="text-sm text-gray-600 mb-1 block">Contraseña</label>
             <input
@@ -83,6 +102,17 @@ export default function Registro() {
               value={password}
               onChange={e => setPassword(e.target.value)}
               placeholder="Mínimo 6 caracteres"
+              className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-green-600"
+            />
+          </div>
+
+          <div>
+            <label className="text-sm text-gray-600 mb-1 block">Confirmar contraseña</label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={e => setConfirmPassword(e.target.value)}
+              placeholder="Repetí tu contraseña"
               className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-green-600"
             />
           </div>
