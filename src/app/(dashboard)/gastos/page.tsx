@@ -24,6 +24,17 @@ interface Gasto {
   fecha: string
 }
 
+const sanitizar = (texto: string): string => {
+  return texto
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+    .replace(/\//g, '&#x2F;')
+    .trim()
+    .slice(0, 200)
+}
+
 export default function Gastos() {
   const [gastos, setGastos] = useState<Gasto[]>([])
   const [descripcion, setDescripcion] = useState('')
@@ -37,14 +48,12 @@ export default function Gastos() {
   const fetchGastos = async () => {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
-
     const { data } = await supabase
       .from('gastos')
       .select('*')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
       .limit(50)
-
     setGastos(data || [])
     setLoadingGastos(false)
   }
@@ -53,14 +62,25 @@ export default function Gastos() {
 
   const handleAgregar = async () => {
     if (!descripcion || !monto) return
-    setLoading(true)
 
+    if (isNaN(Number(monto)) || Number(monto) <= 0 || Number(monto) > 999999999) {
+      alert('Monto inválido')
+      return
+    }
+
+    const descripcionLimpia = sanitizar(descripcion)
+    if (descripcionLimpia.length < 2) {
+      alert('Descripción demasiado corta')
+      return
+    }
+
+    setLoading(true)
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
 
     await supabase.from('gastos').insert({
       user_id: user.id,
-      descripcion,
+      descripcion: descripcionLimpia,
       monto: Number(monto),
       categoria,
       tipo,
@@ -89,7 +109,6 @@ export default function Gastos() {
   return (
     <main className="min-h-screen bg-gray-50">
 
-      {/* NAV */}
       <nav className="bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 bg-green-800 rounded-lg flex items-center justify-center">
@@ -109,7 +128,6 @@ export default function Gastos() {
           <p className="text-gray-500 text-sm">Registrá cada gasto y analizá en qué se va tu plata.</p>
         </div>
 
-        {/* RESUMEN */}
         <div className="grid grid-cols-3 gap-4 mb-6">
           <div className="bg-white border border-gray-100 rounded-xl p-5">
             <p className="text-xs text-gray-400 mb-1">Total este mes</p>
@@ -127,10 +145,8 @@ export default function Gastos() {
 
         <div className="grid grid-cols-2 gap-6">
 
-          {/* FORMULARIO */}
           <div className="bg-white border border-gray-100 rounded-xl p-5">
             <p className="text-sm font-medium text-gray-700 mb-4">Agregar gasto</p>
-
             <div className="flex flex-col gap-3">
               <div>
                 <label className="text-xs text-gray-500 mb-1 block">Descripción</label>
@@ -142,7 +158,6 @@ export default function Gastos() {
                   className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-600"
                 />
               </div>
-
               <div>
                 <label className="text-xs text-gray-500 mb-1 block">Monto</label>
                 <input
@@ -153,7 +168,6 @@ export default function Gastos() {
                   className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-600"
                 />
               </div>
-
               <div>
                 <label className="text-xs text-gray-500 mb-2 block">Categoría</label>
                 <div className="grid grid-cols-4 gap-1.5">
@@ -177,7 +191,6 @@ export default function Gastos() {
                   ))}
                 </div>
               </div>
-
               <button
                 onClick={handleAgregar}
                 disabled={loading || !descripcion || !monto}
@@ -188,10 +201,7 @@ export default function Gastos() {
             </div>
           </div>
 
-          {/* ANALISIS */}
           <div className="flex flex-col gap-4">
-
-            {/* POR CATEGORIA */}
             {gastosPorCategoria.length > 0 && (
               <div className="bg-white border border-gray-100 rounded-xl p-5">
                 <p className="text-sm font-medium text-gray-700 mb-3">Por categoría</p>
@@ -215,7 +225,6 @@ export default function Gastos() {
               </div>
             )}
 
-            {/* LISTA DE GASTOS */}
             <div className="bg-white border border-gray-100 rounded-xl p-5 flex-1">
               <p className="text-sm font-medium text-gray-700 mb-3">Últimos gastos</p>
               {loadingGastos ? (
