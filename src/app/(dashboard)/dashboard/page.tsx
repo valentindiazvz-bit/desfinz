@@ -36,6 +36,11 @@ export default function Dashboard() {
   }
 
   if (loading) {
+
+    const [mounted, setMounted] = useState(false)
+useEffect(() => { setMounted(true) }, [])
+if (!mounted) return null
+
     return (
       <main className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-gray-400 text-sm">Cargando...</div>
