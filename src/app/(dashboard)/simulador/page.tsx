@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { proyectarInversion, mesesParaLlegar, TASAS, NOMBRES_INVERSION } from '@/lib/calculos'
 import { formatearPesos, formatearMeses } from '@/lib/utils'
-import { TipoInversion } from '@/types'
+type TipoInversion = 'colchon' | 'plazo_fijo' | 'fci' | 'cedear'
 
 const OBJETIVOS_PRESET = [
   { label: 'Moto', emoji: '🏍️', monto: 3200000 },
