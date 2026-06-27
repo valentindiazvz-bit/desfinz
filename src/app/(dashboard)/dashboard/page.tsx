@@ -3,15 +3,16 @@
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
-import { formatearPesos } from '@/lib/utils'
 
 export default function Dashboard() {
   const [nombre, setNombre] = useState('')
   const [loading, setLoading] = useState(true)
+  const [mounted, setMounted] = useState(false)
   const router = useRouter()
   const supabase = createClient()
 
   useEffect(() => {
+    setMounted(true)
     const getUser = async () => {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
@@ -35,12 +36,7 @@ export default function Dashboard() {
     router.push('/')
   }
 
-  if (loading) {
-
-    const [mounted, setMounted] = useState(false)
-useEffect(() => { setMounted(true) }, [])
-if (!mounted) return null
-
+  if (!mounted || loading) {
     return (
       <main className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-gray-400 text-sm">Cargando...</div>
@@ -51,7 +47,6 @@ if (!mounted) return null
   return (
     <main className="min-h-screen bg-gray-50">
 
-      {/* NAV */}
       <nav className="bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 bg-green-800 rounded-lg flex items-center justify-center">
@@ -72,60 +67,59 @@ if (!mounted) return null
 
       <div className="max-w-4xl mx-auto px-6 py-10">
 
-        {/* BIENVENIDA */}
         <div className="mb-8">
-          <h1 className="text-2xl font-medium text-gray-900 mb-1">
-            Tu panel financiero
-          </h1>
-          <p className="text-gray-500 text-sm">
-            Organizá tus metas, simulá inversiones y tomá el control de tu plata.
-          </p>
+          <h1 className="text-2xl font-medium text-gray-900 mb-1">Tu panel financiero</h1>
+          <p className="text-gray-500 text-sm">Organizá tus metas, simulá inversiones y tomá el control de tu plata.</p>
         </div>
 
-        {/* CARDS DE ACCESO RÁPIDO */}
         <div className="grid grid-cols-3 gap-4 mb-8">
-          <div className="bg-white border border-gray-100 rounded-xl p-5">
-            <div className="w-9 h-9 bg-green-50 rounded-lg flex items-center justify-center mb-3">
-              <span className="text-lg">🎯</span>
-            </div>
-            <p className="font-medium text-sm mb-1">Mis objetivos</p>
-            <p className="text-xs text-gray-400 mb-3">Moto, auto, viaje — lo que sea.</p>
-            <button className="text-xs text-green-700 font-medium">
-              Agregar objetivo →
-            </button>
-          </div>
-
-          <div className="bg-white border border-gray-100 rounded-xl p-5">
+          <button
+            onClick={() => router.push('/simulador')}
+            className="bg-white border border-gray-100 rounded-xl p-5 text-left hover:border-green-300 transition-all"
+          >
             <div className="w-9 h-9 bg-green-50 rounded-lg flex items-center justify-center mb-3">
               <span className="text-lg">📈</span>
             </div>
             <p className="font-medium text-sm mb-1">Simulador</p>
             <p className="text-xs text-gray-400 mb-3">Calculá cuánto crecen tus ahorros.</p>
-            <button className="text-xs text-green-700 font-medium">
-              Simular ahora →
-            </button>
-          </div>
+            <span className="text-xs text-green-700 font-medium">Simular ahora →</span>
+          </button>
 
-          <div className="bg-white border border-gray-100 rounded-xl p-5">
+          <button
+            onClick={() => router.push('/gastos')}
+            className="bg-white border border-gray-100 rounded-xl p-5 text-left hover:border-green-300 transition-all"
+          >
             <div className="w-9 h-9 bg-green-50 rounded-lg flex items-center justify-center mb-3">
               <span className="text-lg">💸</span>
             </div>
             <p className="font-medium text-sm mb-1">Gastos</p>
             <p className="text-xs text-gray-400 mb-3">Registrá y analizá tus gastos.</p>
-            <button className="text-xs text-green-700 font-medium">
-              Ver gastos →
-            </button>
-          </div>
+            <span className="text-xs text-green-700 font-medium">Ver gastos →</span>
+          </button>
+
+          <button
+            onClick={() => router.push('/simulador')}
+            className="bg-white border border-gray-100 rounded-xl p-5 text-left hover:border-green-300 transition-all"
+          >
+            <div className="w-9 h-9 bg-green-50 rounded-lg flex items-center justify-center mb-3">
+              <span className="text-lg">🎯</span>
+            </div>
+            <p className="font-medium text-sm mb-1">Mis objetivos</p>
+            <p className="text-xs text-gray-400 mb-3">Moto, auto, viaje — lo que sea.</p>
+            <span className="text-xs text-green-700 font-medium">Agregar objetivo →</span>
+          </button>
         </div>
 
-        {/* ESTADO VACÍO */}
         <div className="bg-white border border-gray-100 rounded-xl p-10 text-center">
           <div className="text-4xl mb-3">🚀</div>
           <p className="font-medium text-gray-900 mb-1">Empezá con tu primer objetivo</p>
           <p className="text-sm text-gray-400 mb-5">
             Decinos qué querés lograr y te decimos exactamente cómo llegar.
           </p>
-          <button className="bg-green-800 text-green-100 text-sm font-medium px-6 py-2.5 rounded-lg">
+          <button
+            onClick={() => router.push('/simulador')}
+            className="bg-green-800 text-green-100 text-sm font-medium px-6 py-2.5 rounded-lg"
+          >
             Crear mi primer objetivo
           </button>
         </div>
